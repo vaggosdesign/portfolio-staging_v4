@@ -15768,6 +15768,73 @@ html[data-universe="far"] #writingView .writing-project-platform-mark {border-co
   #writingView .writing-project-cover-image,
   #writingView .writing-project-read svg {transition:none!important;animation:none!important;}
 }
+
+/* ===========================================================================
+   v365 | Unified case-study vertical rhythm
+   All four editorial case studies use the same spacing scale. Independent
+   topics retain breathing room; headlines, conclusions, charts and evidence
+   that belong together are kept in one visual group. This replaces the older
+   118–130px subsection gaps and the inconsistent positive/negative margins.
+   Applies across Normal / Far, light / dark, desktop / mobile.
+   =========================================================================== */
+html .case-study-view:is(#riskRadarView, #supplyChainMappingView, #holidayHomesView, #softwareSuiteView) {
+  --case-chapter-space: clamp(96px, 7.6vw, 124px);
+  --case-heading-space: 44px;
+  --case-subsection-space: clamp(64px, 5.4vw, 80px);
+  --case-associated-space: 28px;
+  --case-visual-space: 28px;
+  --case-card-space: 20px;
+}
+html .case-study-view:is(#riskRadarView, #supplyChainMappingView, #holidayHomesView, #softwareSuiteView) .case-section + .case-section {
+  margin-top: var(--case-chapter-space);
+}
+html .case-study-view:is(#riskRadarView, #supplyChainMappingView, #holidayHomesView, #softwareSuiteView) .case-section-heading {
+  margin-bottom: var(--case-heading-space);
+}
+html .case-study-view:is(#riskRadarView, #supplyChainMappingView, #holidayHomesView, #softwareSuiteView) .case-blocks {
+  gap: var(--case-subsection-space);
+}
+html .case-study-view:is(#riskRadarView, #supplyChainMappingView, #holidayHomesView, #softwareSuiteView) .case-block > .case-block {
+  margin-top: var(--case-subsection-space) !important;
+}
+/* The heading is part of its related content, not a separate subsection. */
+html .case-study-view:is(#riskRadarView, #supplyChainMappingView, #holidayHomesView, #softwareSuiteView) .case-blocks > .case-block:has(> .case-block-title:only-child) > .case-block-title {
+  margin-bottom: 0;
+}
+/* Attached evidence that follows a standalone introductory block. */
+html .case-study-view:is(#riskRadarView, #supplyChainMappingView, #holidayHomesView, #softwareSuiteView) .case-blocks > .case-block + :is(.takeaways-grid, .impact-grid, .case-stat-grid, .scm-update-card-grid, .case-image-gallery, .case-image-grid, .case-testing-grid, .case-vote-chart-card, .hcl-product-grid, .holiday-problem-grid) {
+  margin-top: calc(var(--case-associated-space) - var(--case-subsection-space)) !important;
+}
+/* Notes and callouts attached to the preceding evidence or each other. */
+html .case-study-view:is(#riskRadarView, #supplyChainMappingView, #holidayHomesView, #softwareSuiteView) .case-blocks > .case-callout {
+  margin: calc(var(--case-associated-space) - var(--case-subsection-space)) 0 0 !important;
+}
+html .case-study-view:is(#riskRadarView, #supplyChainMappingView, #holidayHomesView, #softwareSuiteView) .case-blocks > .case-callout + .case-callout {
+  margin-top: calc(20px - var(--case-subsection-space)) !important;
+}
+html .case-study-view:is(#riskRadarView, #supplyChainMappingView, #holidayHomesView, #softwareSuiteView) .case-blocks > .case-callout + :is(.scm-update-card-grid, .case-image-gallery, .case-stat-grid) {
+  margin-top: calc(var(--case-associated-space) - var(--case-subsection-space)) !important;
+}
+/* Consistent distances between a subtitle, its paragraph and visual evidence. */
+html .case-study-view:is(#riskRadarView, #supplyChainMappingView, #holidayHomesView, #softwareSuiteView) .case-block-title {
+  margin-bottom: 18px;
+}
+html .case-study-view:is(#riskRadarView, #supplyChainMappingView, #holidayHomesView, #softwareSuiteView) .case-block :is(.case-image-frame, .case-process-wrap, .case-image-grid, .case-testing-grid, .case-vote-chart-card, .case-stat-grid, .case-image-gallery) {
+  margin-top: var(--case-visual-space);
+}
+html .case-study-view:is(#riskRadarView, #supplyChainMappingView, #holidayHomesView, #softwareSuiteView) :is(.takeaways-grid, .impact-grid, .case-stat-grid, .scm-update-card-grid, .case-image-grid, .case-image-gallery, .case-testing-grid) {
+  gap: var(--case-card-space);
+}
+@media (max-width: 760px) {
+  html .case-study-view:is(#riskRadarView, #supplyChainMappingView, #holidayHomesView, #softwareSuiteView) {
+    --case-chapter-space: 80px;
+    --case-heading-space: 32px;
+    --case-subsection-space: 52px;
+    --case-associated-space: 22px;
+    --case-visual-space: 22px;
+    --case-card-space: 16px;
+  }
+}
 </style>
 </head>
 <body>

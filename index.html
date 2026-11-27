@@ -15769,67 +15769,782 @@ html[data-universe="far"] #writingView .writing-project-platform-mark {border-co
   #writingView .writing-project-read svg {transition:none!important;animation:none!important;}
 }
 
-/* v363 — Case-study chapter navigation parity in Far, far away modes.
-   The legacy flex parent shrank the chapter grid to its 195px minimum,
-   creating a six-row column. Match the normal-mode full-width structure
-   while preserving Light Side / Dark Side palette and interaction states. */
-html[data-universe="far"] .case-study-view .case-contents {
-  display: block;
-  box-sizing: border-box;
+/* ===========================================================================
+   v365 | Unified case-study vertical rhythm
+   All four editorial case studies use the same spacing scale. Independent
+   topics retain breathing room; headlines, conclusions, charts and evidence
+   that belong together are kept in one visual group. This replaces the older
+   118–130px subsection gaps and the inconsistent positive/negative margins.
+   Applies across Normal / Far, light / dark, desktop / mobile.
+   =========================================================================== */
+html .case-study-view:is(#riskRadarView, #supplyChainMappingView, #holidayHomesView, #softwareSuiteView) {
+  --case-chapter-space: clamp(96px, 7.6vw, 124px);
+  --case-heading-space: 44px;
+  --case-subsection-space: clamp(64px, 5.4vw, 80px);
+  --case-associated-space: 28px;
+  --case-visual-space: 28px;
+  --case-card-space: 20px;
+}
+html .case-study-view:is(#riskRadarView, #supplyChainMappingView, #holidayHomesView, #softwareSuiteView) .case-section + .case-section {
+  margin-top: var(--case-chapter-space);
+}
+html .case-study-view:is(#riskRadarView, #supplyChainMappingView, #holidayHomesView, #softwareSuiteView) .case-section-heading {
+  margin-bottom: var(--case-heading-space);
+}
+html .case-study-view:is(#riskRadarView, #supplyChainMappingView, #holidayHomesView, #softwareSuiteView) .case-blocks {
+  gap: var(--case-subsection-space);
+}
+html .case-study-view:is(#riskRadarView, #supplyChainMappingView, #holidayHomesView, #softwareSuiteView) .case-block > .case-block {
+  margin-top: var(--case-subsection-space) !important;
+}
+/* The heading is part of its related content, not a separate subsection. */
+html .case-study-view:is(#riskRadarView, #supplyChainMappingView, #holidayHomesView, #softwareSuiteView) .case-blocks > .case-block:has(> .case-block-title:only-child) > .case-block-title {
+  margin-bottom: 0;
+}
+/* Attached evidence that follows a standalone introductory block. */
+html .case-study-view:is(#riskRadarView, #supplyChainMappingView, #holidayHomesView, #softwareSuiteView) .case-blocks > .case-block + :is(.takeaways-grid, .impact-grid, .case-stat-grid, .scm-update-card-grid, .case-image-gallery, .case-image-grid, .case-testing-grid, .case-vote-chart-card, .hcl-product-grid, .holiday-problem-grid) {
+  margin-top: calc(var(--case-associated-space) - var(--case-subsection-space)) !important;
+}
+/* Notes and callouts attached to the preceding evidence or each other. */
+html .case-study-view:is(#riskRadarView, #supplyChainMappingView, #holidayHomesView, #softwareSuiteView) .case-blocks > .case-callout {
+  margin: calc(var(--case-associated-space) - var(--case-subsection-space)) 0 0 !important;
+}
+html .case-study-view:is(#riskRadarView, #supplyChainMappingView, #holidayHomesView, #softwareSuiteView) .case-blocks > .case-callout + .case-callout {
+  margin-top: calc(20px - var(--case-subsection-space)) !important;
+}
+html .case-study-view:is(#riskRadarView, #supplyChainMappingView, #holidayHomesView, #softwareSuiteView) .case-blocks > .case-callout + :is(.scm-update-card-grid, .case-image-gallery, .case-stat-grid) {
+  margin-top: calc(var(--case-associated-space) - var(--case-subsection-space)) !important;
+}
+/* Consistent distances between a subtitle, its paragraph and visual evidence. */
+html .case-study-view:is(#riskRadarView, #supplyChainMappingView, #holidayHomesView, #softwareSuiteView) .case-block-title {
+  margin-bottom: 18px;
+}
+html .case-study-view:is(#riskRadarView, #supplyChainMappingView, #holidayHomesView, #softwareSuiteView) .case-block :is(.case-image-frame, .case-process-wrap, .case-image-grid, .case-testing-grid, .case-vote-chart-card, .case-stat-grid, .case-image-gallery) {
+  margin-top: var(--case-visual-space);
+}
+html .case-study-view:is(#riskRadarView, #supplyChainMappingView, #holidayHomesView, #softwareSuiteView) :is(.takeaways-grid, .impact-grid, .case-stat-grid, .scm-update-card-grid, .case-image-grid, .case-image-gallery, .case-testing-grid) {
+  gap: var(--case-card-space);
+}
+@media (max-width: 760px) {
+  html .case-study-view:is(#riskRadarView, #supplyChainMappingView, #holidayHomesView, #softwareSuiteView) {
+    --case-chapter-space: 80px;
+    --case-heading-space: 32px;
+    --case-subsection-space: 52px;
+    --case-associated-space: 22px;
+    --case-visual-space: 22px;
+    --case-card-space: 16px;
+  }
+}
+
+
+/* ===========================================================================
+   v366 | Case study visual rhythm and evidence-card alignment
+   Applied consistently to all four case studies and all appearance modes.
+   =========================================================================== */
+html .case-study-view:is(#riskRadarView, #supplyChainMappingView, #holidayHomesView, #softwareSuiteView) {
+  --case-media-after-paragraph: 32px;
+}
+
+/* A paragraph introduces its illustration. Do not stack its bottom margin on
+   top of the media's margin; use one deliberate 32px separation instead. */
+html .case-study-view .case-block > .case-body:has(+ :is(
+  .case-image-frame, .case-image-grid, .case-image-gallery, .case-stacked-media,
+  .case-process-wrap, .case-motion-video-frame, .hcl-background-video-frame,
+  .holiday-legacy-card, .scm-update-card-grid
+)) {
+  margin-bottom: 0 !important;
+}
+html .case-study-view .case-block > .case-body + :is(
+  .case-image-frame, .case-image-grid, .case-image-gallery, .case-stacked-media,
+  .case-process-wrap, .case-motion-video-frame, .hcl-background-video-frame,
+  .holiday-legacy-card, .scm-update-card-grid
+) {
+  margin-top: var(--case-media-after-paragraph) !important;
+}
+/* Includes the wide hero visual immediately below the closing paragraph. */
+html .case-study-view .case-final-design-showcase > .case-body + .case-image-frame {
+  margin-top: var(--case-media-after-paragraph) !important;
+}
+
+/* Images / videos / image links sit at the centre of their own visual area.
+   Captions stay left-aligned and start at the same top edge below the area. */
+html .case-study-view .scm-update-card-media {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 100%;
+  min-width: 0;
+  overflow: hidden;
+}
+html .case-study-view .scm-update-card-media > .case-image-link {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+}
+html .case-study-view .scm-update-card-media img,
+html .case-study-view .scm-update-card-media video {
+  display: block;
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  object-position: center;
+  flex: 0 1 auto;
+}
+html .case-study-view .scm-update-card > .case-body {
+  align-self: stretch;
+  text-align: left;
+  margin: 0 !important;
+  max-width: none;
+}
+/* Reserve the same height for each visual in a 2-up (or 4-up) evidence row.
+   This aligns the captions even when the screenshots have different ratios. */
+@media (min-width: 801px) {
+  html #supplyChainMappingView .scm-update-card-grid:not(.scm-problem-goal-grid) .scm-update-card-media,
+  html #holidayHomesView .scm-update-card-grid .scm-update-card-media,
+  html #softwareSuiteView #hcl-demos .scm-update-card-media,
+  html #softwareSuiteView #hcl-design-system .hcl-supporting-grid .scm-update-card-media {
+    height: clamp(260px, 25vw, 380px);
+    flex: 0 0 auto;
+  }
+}
+/* Unconstrained image size on narrow layouts, but retain a centred visual. */
+@media (max-width: 800px) {
+  html #supplyChainMappingView .scm-update-card-grid .scm-update-card-media,
+  html #holidayHomesView .scm-update-card-grid .scm-update-card-media,
+  html #softwareSuiteView #hcl-demos .scm-update-card-media,
+  html #softwareSuiteView #hcl-design-system .hcl-supporting-grid .scm-update-card-media {
+    min-height: 190px;
+  }
+}
+
+/* Neutral insight treatment: no blue / purple / brown gradient in any theme. */
+html .case-study-view .case-callout,
+html #riskRadarView .case-callout {
+  box-sizing: border-box;
+  background: var(--surface) !important;
+  background-image: none !important;
+  border: 1px solid var(--card-stroke) !important;
+  border-left: 3px solid var(--brand-blue) !important;
+  box-shadow: none !important;
+  border-radius: 12px !important;
+  max-width: none !important;
+  padding: 20px 24px !important;
+  margin-inline: 0 !important;
+  text-align: left;
+}
+html .case-study-view .case-callout::after,
+html #riskRadarView .case-callout::after {
+  content: none !important;
+}
+/* Standalone insights occupy exactly one column of a normal paired card row. */
+html .case-study-view .case-blocks > .case-callout,
+html .case-study-view .case-block > .case-callout {
+  width: calc((100% - var(--case-card-space, 20px)) / 2) !important;
+  align-self: flex-start;
+}
+/* Two adjacent insights are a true 2-column row rather than narrow boxes
+   floating inside larger empty columns. */
+html .case-study-view .case-insight-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--case-card-space, 20px);
+  width: 100%;
+  align-items: stretch;
+}
+html .case-study-view :is(.case-insight-grid, .case-testing-grid) > .case-callout,
+html .case-study-view .case-two-column .case-callout {
+  width: 100% !important;
+  max-width: none !important;
+  height: 100%;
+  margin: 0 !important;
+  align-self: stretch;
+}
+/* Attach the paired hypotheses to their preceding evidence, not to a new chapter. */
+html .case-study-view .case-blocks > .case-insight-grid {
+  margin-top: calc(var(--case-associated-space, 28px) - var(--case-subsection-space, 72px)) !important;
+}
+html .case-study-view .case-blocks > .case-insight-grid + .case-block {
+  margin-top: 0 !important;
+}
+html .case-study-view .case-blocks > .case-insight-grid + .scm-update-card-grid {
+  margin-top: calc(var(--case-associated-space, 28px) - var(--case-subsection-space, 72px)) !important;
+}
+
+/* Retain theme-specific foreground/accent colours, but a solid surface. */
+html[data-universe="far"] .case-study-view .case-callout {
+  background: var(--far-pane) !important;
+  background-image: none !important;
+  border-color: var(--far-hairline) !important;
+  border-left-color: var(--far-accent) !important;
+}
+html[data-universe="far"][data-side="dark"] .case-study-view .case-callout {
+  border-left-color: #ff5960 !important;
+}
+
+@media (max-width: 760px) {
+  html .case-study-view:is(#riskRadarView, #supplyChainMappingView, #holidayHomesView, #softwareSuiteView) {
+    --case-media-after-paragraph: 24px;
+  }
+  html .case-study-view .case-insight-grid {
+    grid-template-columns: 1fr;
+  }
+  html .case-study-view .case-blocks > .case-callout,
+  html .case-study-view .case-block > .case-callout {
+    width: 100% !important;
+  }
+  html .case-study-view .case-insight-grid > .case-callout {
+    width: 100% !important;
+  }
+  html .case-study-view .case-callout {
+    padding: 18px 20px !important;
+  }
+}
+
+
+
+/* ===========================================================================
+   v367 | Shared media-frame inset and restored testing-outcome separation
+   A single spacing token applies to full-width editorial media, image galleries,
+   final-product illustrations and embedded videos in all four case studies.
+   The hero banners are intentionally not editorial media frames.
+   =========================================================================== */
+html .case-study-view:is(#riskRadarView, #supplyChainMappingView, #holidayHomesView, #softwareSuiteView) {
+  --case-frame-padding: 20px;
+  --case-testing-outcome-gap: 24px;
+}
+
+/* All editorial image frames use the SAME internal padding regardless of
+   page, image size, theme, gallery or final-design showcase. */
+html .case-study-view:is(#riskRadarView, #supplyChainMappingView, #holidayHomesView, #softwareSuiteView) .case-image-frame {
+  box-sizing: border-box;
+  padding: var(--case-frame-padding) !important;
+}
+
+/* The full-width motion frames have absolutely positioned video elements, so
+   padding alone does not inset the picture. Apply the same token to the video. */
+html .case-study-view:is(#riskRadarView, #supplyChainMappingView, #holidayHomesView, #softwareSuiteView) .case-motion-video-frame {
+  box-sizing: border-box;
+  padding: var(--case-frame-padding) !important;
+}
+html .case-study-view:is(#riskRadarView, #supplyChainMappingView, #holidayHomesView, #softwareSuiteView) .case-motion-video-frame > .case-motion-video {
+  inset: var(--case-frame-padding) !important;
+  width: calc(100% - 2 * var(--case-frame-padding)) !important;
+  height: calc(100% - 2 * var(--case-frame-padding)) !important;
+  border-radius: 8px;
+}
+/* Keep playback controls within the padded media area. */
+html .case-study-view:is(#riskRadarView, #supplyChainMappingView, #holidayHomesView, #softwareSuiteView) .case-motion-video-frame > .case-video-toggle {
+  right: calc(var(--case-frame-padding) + 12px);
+  bottom: calc(var(--case-frame-padding) + 12px);
+}
+
+/* Restore separation between test screenshots and their associated outcome
+   callouts; v366's generic zero-margin rule had collapsed this distance. */
+html .case-study-view:is(#riskRadarView, #supplyChainMappingView, #holidayHomesView, #softwareSuiteView) .case-testing-grid > .case-block > .case-image-frame + .case-callout {
+  margin-top: var(--case-testing-outcome-gap) !important;
+  height: auto;
+}
+
+@media (max-width: 760px) {
+  html .case-study-view:is(#riskRadarView, #supplyChainMappingView, #holidayHomesView, #softwareSuiteView) {
+    --case-frame-padding: 12px;
+    --case-testing-outcome-gap: 20px;
+  }
+}
+
+
+
+/* ==========================================================================
+   v368 | Restore visible, consistent media containers across case studies.
+   v367 added media padding but older `.is-unframed-compact` and final-design
+   rules removed borders/backgrounds, leaving screenshots floating on the page.
+   These shared rules ensure that image AND video frames have an identical
+   1px outline, 16px corner radius and 20px / 12px inner padding.
+   ========================================================================== */
+html .case-study-view:is(#riskRadarView, #supplyChainMappingView, #holidayHomesView, #softwareSuiteView) {
+  --case-media-frame-bg: var(--surface);
+  --case-media-frame-stroke: var(--card-stroke);
+}
+html[data-universe="far"] .case-study-view:is(#riskRadarView, #supplyChainMappingView, #holidayHomesView, #softwareSuiteView) {
+  --case-media-frame-bg: var(--far-pane);
+  --case-media-frame-stroke: var(--far-hairline);
+}
+
+/* Target the actual media frame, including the formerly unframed testing
+   figures, galleries and full-width final concept screenshots. */
+html .case-study-view:is(#riskRadarView, #supplyChainMappingView, #holidayHomesView, #softwareSuiteView) .case-image-frame,
+html .case-study-view:is(#riskRadarView, #supplyChainMappingView, #holidayHomesView, #softwareSuiteView) .case-motion-video-frame {
+  box-sizing: border-box;
+  padding: var(--case-frame-padding) !important;
+  border: 1px solid var(--case-media-frame-stroke) !important;
+  border-radius: 16px !important;
+  background: var(--case-media-frame-bg) !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  overflow: hidden !important;
+}
+
+/* Keep every full-width still inside the visible inset, not stretched/cropped. */
+html .case-study-view:is(#riskRadarView, #supplyChainMappingView, #holidayHomesView, #softwareSuiteView) .case-image-frame > :is(img, picture, a) {
+  max-width: 100%;
+}
+
+@media (max-width: 760px) {
+  html .case-study-view:is(#riskRadarView, #supplyChainMappingView, #holidayHomesView, #softwareSuiteView) .case-image-frame,
+  html .case-study-view:is(#riskRadarView, #supplyChainMappingView, #holidayHomesView, #softwareSuiteView) .case-motion-video-frame {
+    border-radius: 12px !important;
+  }
+}
+
+
+/* ==========================================================================
+   v369 | Far, far away: seamless case-study and project-cover hero imagery.
+   Keep hero art visually open in both galaxy sides; do not change the
+   framed, consistently padded *content* media introduced in v368.
+   ========================================================================== */
+html[data-universe="far"] .case-study-view .case-hero-banner {
+  border: 0 !important;
+  border-radius: 0 !important;
+  outline: 0 !important;
+  box-shadow: none !important;
+  background: radial-gradient(ellipse 72% 67% at 50% 48%, var(--far-case-wash, rgba(164,196,179,.16)) 0%, transparent 90%) !important;
+}
+html[data-universe="far"] .case-study-view .case-hero-banner-media {
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
   overflow: visible;
-  padding: 26px 0 28px;
-  margin: 0 0 76px;
+}
+/* A feathered cover wash instead of a coloured, hard-edged inset frame.
+   Keep each project card's outer outline and hover interaction intact. */
+html[data-universe="far"] #projectsView .project-showcase-hero-frame {
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: radial-gradient(ellipse 75% 80% at 50% 32%, var(--cover-wash, rgba(180,180,180,.20)) 0%, transparent 100%) !important;
+  box-shadow: none !important;
+}
+
+
+
+/* ==========================================================================
+   v370 | Restore visible, unboxed Far, far away hero colour washes.
+   Match Normal mode's page-level feather instead of a hero rectangle.
+   Each case study retains its own colour identity in both galaxy sides.
+   ========================================================================== */
+html[data-universe="far"] #riskRadarView {
+  --far-hero-feather-primary: rgba(88, 174, 116, .42);
+  --far-hero-feather-secondary: rgba(140, 197, 153, .27);
+}
+html[data-universe="far"] #supplyChainMappingView {
+  --far-hero-feather-primary: rgba(159, 118, 216, .43);
+  --far-hero-feather-secondary: rgba(188, 151, 227, .27);
+}
+html[data-universe="far"] #holidayHomesView {
+  --far-hero-feather-primary: rgba(230, 164, 79, .44);
+  --far-hero-feather-secondary: rgba(249, 194, 106, .26);
+}
+html[data-universe="far"] #softwareSuiteView {
+  --far-hero-feather-primary: rgba(90, 174, 226, .42);
+  --far-hero-feather-secondary: rgba(157, 205, 235, .27);
+}
+html[data-universe="far"][data-side="dark"] #riskRadarView {
+  --far-hero-feather-primary: rgba(179, 42, 64, .48);
+  --far-hero-feather-secondary: rgba(132, 31, 48, .32);
+}
+html[data-universe="far"][data-side="dark"] #supplyChainMappingView {
+  --far-hero-feather-primary: rgba(171, 56, 134, .44);
+  --far-hero-feather-secondary: rgba(119, 36, 105, .28);
+}
+html[data-universe="far"][data-side="dark"] #holidayHomesView {
+  --far-hero-feather-primary: rgba(198, 96, 52, .43);
+  --far-hero-feather-secondary: rgba(127, 53, 32, .29);
+}
+html[data-universe="far"][data-side="dark"] #softwareSuiteView {
+  --far-hero-feather-primary: rgba(184, 69, 91, .44);
+  --far-hero-feather-secondary: rgba(119, 44, 73, .30);
+}
+/* The background belongs to the whole case-study canvas, not to an inset panel.
+   Both gradients reach full transparency well before their painted region ends. */
+html[data-universe="far"] .case-study-view > .case-study-canvas {
+  background-color: transparent !important;
+  background-image:
+    radial-gradient(ellipse 78% 410px at 16% 0%, var(--far-hero-feather-primary) 0%, transparent 92%),
+    radial-gradient(ellipse 67% 355px at 85% 3%, var(--far-hero-feather-secondary) 0%, transparent 91%) !important;
+  background-size: 100% 650px !important;
+  background-repeat: no-repeat !important;
+}
+/* Keep the banner itself seamless so the feather never has a rectangular edge. */
+html[data-universe="far"] .case-study-view .case-hero-banner,
+html[data-universe="far"] .case-study-view .case-hero-banner.is-supply-chain,
+html[data-universe="far"] .case-study-view .case-hero-banner.is-holiday-homes,
+html[data-universe="far"] .case-study-view .case-hero-banner.is-software-suite {
+  background: transparent !important;
+  border: none !important;
+  outline: none !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+/* Restore the more visible, project-specific cover colours in the Projects grid.
+   This does not add a second frame around the cover artwork. */
+html[data-universe="far"] #projectsView .project-showcase-hero-frame {
+  background:
+    radial-gradient(ellipse 90% 95% at 24% 0%, var(--cover-wash) 0%, transparent 80%),
+    var(--cover-base) !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+
+
+/* ============================================================================
+   v371 | Full-bleed, visible Far, far away case-study hero backgrounds.
+   Match Normal mode's full-width canvas wash and horizontal bleed.
+   Previous themed rules with higher specificity were suppressing v370's
+   canvas gradient entirely; the banner was also reset to margin: 0.
+   ============================================================================ */
+
+/* Restore Normal mode's negative gutter so the hero spans the page width,
+   rather than appearing inside the inset case-study content column. */
+html[data-universe="far"] .case-study-view .case-hero-shell {
+  margin-top: calc(-1 * var(--page-space)) !important;
+}
+html[data-universe="far"] .case-study-view .case-hero-banner,
+html[data-universe="far"] .case-study-view .case-hero-banner.is-supply-chain,
+html[data-universe="far"] .case-study-view .case-hero-banner.is-holiday-homes,
+html[data-universe="far"] .case-study-view .case-hero-banner.is-software-suite {
+  margin-left: calc(-1 * clamp(20px, 2.5vw, 42px)) !important;
+  margin-right: calc(-1 * clamp(20px, 2.5vw, 42px)) !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+/* The colour belongs to the entire page-width canvas, as it does in Normal
+   mode, not to a rectangle around the laptop. Include the side-specific ID
+   selectors to override legacy 'background:none !important' declarations. */
+html[data-universe="far"][data-side="light"] #riskRadarView > .case-study-canvas,
+html[data-universe="far"][data-side="light"] #supplyChainMappingView > .case-study-canvas,
+html[data-universe="far"][data-side="light"] #holidayHomesView > .case-study-canvas,
+html[data-universe="far"][data-side="light"] #softwareSuiteView > .case-study-canvas,
+html[data-universe="far"][data-side="dark"] #riskRadarView > .case-study-canvas,
+html[data-universe="far"][data-side="dark"] #supplyChainMappingView > .case-study-canvas,
+html[data-universe="far"][data-side="dark"] #holidayHomesView > .case-study-canvas,
+html[data-universe="far"][data-side="dark"] #softwareSuiteView > .case-study-canvas {
+  background-color: transparent !important;
+  background-image:
+    radial-gradient(ellipse 74% 350px at 16% 0%, var(--far-hero-feather-primary) 0%, transparent 88%),
+    radial-gradient(ellipse 65% 320px at 83% 0%, var(--far-hero-feather-secondary) 0%, transparent 88%),
+    linear-gradient(180deg, var(--far-hero-feather-base) 0%, transparent 100%) !important;
+  background-size: 100% 650px !important;
+  background-repeat: no-repeat !important;
+  background-position: top left !important;
+}
+
+/* A visible, uninterrupted wash across the whole page width. Retain the
+   separate project colour identity and Light/Dark Side ambience. */
+html[data-universe="far"] #riskRadarView { --far-hero-feather-base: rgba(104, 171, 123, .22); }
+html[data-universe="far"] #supplyChainMappingView { --far-hero-feather-base: rgba(155, 112, 201, .20); }
+html[data-universe="far"] #holidayHomesView { --far-hero-feather-base: rgba(225, 163, 84, .20); }
+html[data-universe="far"] #softwareSuiteView { --far-hero-feather-base: rgba(100, 166, 212, .21); }
+html[data-universe="far"][data-side="dark"] #riskRadarView { --far-hero-feather-base: rgba(142, 33, 51, .31); }
+html[data-universe="far"][data-side="dark"] #supplyChainMappingView { --far-hero-feather-base: rgba(120, 42, 103, .30); }
+html[data-universe="far"][data-side="dark"] #holidayHomesView { --far-hero-feather-base: rgba(159, 73, 42, .29); }
+html[data-universe="far"][data-side="dark"] #softwareSuiteView { --far-hero-feather-base: rgba(143, 48, 77, .30); }
+
+@media (max-width: 760px) {
+  html[data-universe="far"] .case-study-view .case-hero-shell {
+    margin-top: calc(-1 * var(--page-space)) !important;
+  }
+  html[data-universe="far"][data-side="light"] #riskRadarView > .case-study-canvas,
+  html[data-universe="far"][data-side="light"] #supplyChainMappingView > .case-study-canvas,
+  html[data-universe="far"][data-side="light"] #holidayHomesView > .case-study-canvas,
+  html[data-universe="far"][data-side="light"] #softwareSuiteView > .case-study-canvas,
+  html[data-universe="far"][data-side="dark"] #riskRadarView > .case-study-canvas,
+  html[data-universe="far"][data-side="dark"] #supplyChainMappingView > .case-study-canvas,
+  html[data-universe="far"][data-side="dark"] #holidayHomesView > .case-study-canvas,
+  html[data-universe="far"][data-side="dark"] #softwareSuiteView > .case-study-canvas {
+    background-size: 100% 530px !important;
+  }
+}
+
+@media (max-width: 650px) {
+  html[data-universe="far"] .case-study-view .case-hero-banner,
+  html[data-universe="far"] .case-study-view .case-hero-banner.is-supply-chain,
+  html[data-universe="far"] .case-study-view .case-hero-banner.is-holiday-homes,
+  html[data-universe="far"] .case-study-view .case-hero-banner.is-software-suite {
+    margin-left: -17px !important;
+    margin-right: -17px !important;
+  }
+}
+
+
+/* ===========================================================================
+   v372 | Galaxy projects: theme-matched cover colours, full-card links,
+          and consistent, functional chapter navigation.
+   Keep Normal mode and case-study media/layout unchanged.
+   =========================================================================== */
+
+/* Use the same stretched native anchor already used in Normal mode.
+   It makes the complete visual card clickable, not only "Read case study". */
+html[data-universe="far"] #projectsView .projects-page-grid > .project-showcase-card {
+  position: relative;
+  cursor: pointer;
+}
+html[data-universe="far"] #projectsView .projects-page-grid > .project-showcase-card .project-case-study-link::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 35;
+}
+html[data-universe="far"] #projectsView .projects-page-grid > .project-showcase-card:focus-within {
+  outline: 2px solid var(--outline-saber-b);
+  outline-offset: 3px;
+}
+
+/* Cover colours now match the *same project-specific blade/hover palette*.
+   The normal portfolio keeps its existing independent project colours. */
+html[data-universe="far"][data-side="light"] #projectsView #risk-radar {
+  --cover-base: #e0f4fc;
+  --cover-wash: rgba(52, 220, 255, .44);
+}
+html[data-universe="far"][data-side="light"] #projectsView #supply-chain-mapping {
+  --cover-base: #e0f6e8;
+  --cover-wash: rgba(53, 201, 107, .40);
+}
+html[data-universe="far"][data-side="light"] #projectsView #holiday-homes {
+  --cover-base: #fff4d5;
+  --cover-wash: rgba(255, 217, 90, .43);
+}
+html[data-universe="far"][data-side="light"] #projectsView #software-suite {
+  --cover-base: #eee7ff;
+  --cover-wash: rgba(158, 122, 242, .40);
+}
+html[data-universe="far"][data-side="dark"] #projectsView #risk-radar {
+  --cover-base: #32191e;
+  --cover-wash: rgba(255, 66, 72, .39);
+}
+html[data-universe="far"][data-side="dark"] #projectsView #supply-chain-mapping {
+  --cover-base: #351b33;
+  --cover-wash: rgba(255, 79, 216, .35);
+}
+html[data-universe="far"][data-side="dark"] #projectsView #holiday-homes {
+  --cover-base: #39251b;
+  --cover-wash: rgba(255, 139, 49, .35);
+}
+html[data-universe="far"][data-side="dark"] #projectsView #software-suite {
+  --cover-base: #321924;
+  --cover-wash: rgba(188, 22, 51, .41);
+}
+
+/* Let the corresponding full-width case-study hero wash share that identity. */
+html[data-universe="far"][data-side="light"] #riskRadarView {
+  --far-hero-feather-primary: rgba(52, 192, 232, .39);
+  --far-hero-feather-secondary: rgba(52, 220, 255, .24);
+}
+html[data-universe="far"][data-side="light"] #supplyChainMappingView {
+  --far-hero-feather-primary: rgba(53, 201, 107, .36);
+  --far-hero-feather-secondary: rgba(112, 229, 155, .24);
+}
+html[data-universe="far"][data-side="light"] #holidayHomesView {
+  --far-hero-feather-primary: rgba(255, 205, 71, .39);
+  --far-hero-feather-secondary: rgba(255, 221, 125, .24);
+}
+html[data-universe="far"][data-side="light"] #softwareSuiteView {
+  --far-hero-feather-primary: rgba(158, 122, 242, .36);
+  --far-hero-feather-secondary: rgba(194, 162, 255, .23);
+}
+html[data-universe="far"][data-side="dark"] #riskRadarView {
+  --far-hero-feather-primary: rgba(255, 66, 72, .35);
+  --far-hero-feather-secondary: rgba(169, 35, 51, .24);
+}
+html[data-universe="far"][data-side="dark"] #supplyChainMappingView {
+  --far-hero-feather-primary: rgba(255, 79, 216, .32);
+  --far-hero-feather-secondary: rgba(153, 43, 137, .23);
+}
+html[data-universe="far"][data-side="dark"] #holidayHomesView {
+  --far-hero-feather-primary: rgba(255, 139, 49, .32);
+  --far-hero-feather-secondary: rgba(177, 74, 33, .25);
+}
+html[data-universe="far"][data-side="dark"] #softwareSuiteView {
+  --far-hero-feather-primary: rgba(188, 22, 51, .37);
+  --far-hero-feather-secondary: rgba(145, 35, 73, .24);
+}
+
+/* Fix the vertical stack introduced by display:contents / flex shrinkage.
+   Give the link grid the complete width, just like the Normal chapter menu. */
+html[data-universe="far"] .case-study-view .case-contents {
+  display: block !important;
+  width: 100%;
+  max-width: none;
+  box-sizing: border-box;
+  overflow: visible;
 }
 html[data-universe="far"] .case-study-view .case-contents-title {
   display: block;
+  width: auto;
   margin: 0 0 14px;
-  font-size: 12px;
-  font-weight: 740;
-  letter-spacing: .09em;
-  text-transform: uppercase;
+  text-align: left;
 }
 html[data-universe="far"] .case-study-view .case-contents-links {
-  display: grid;
-  box-sizing: border-box;
+  display: grid !important;
   width: 100%;
   min-width: 0;
   grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
   gap: 12px 14px;
 }
 html[data-universe="far"] .case-study-view .case-contents-links > .case-contents-link {
+  display: flex;
   box-sizing: border-box;
   width: 100%;
   max-width: none;
   min-width: 0;
-  min-height: 54px;
-  padding: 12px 15px;
-  justify-self: stretch;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  line-height: 1.5;
-  font-size: 12.5px;
+  min-height: 50px;
+  padding: 11px 14px;
+  justify-content: flex-start;
+  text-align: left;
   white-space: normal;
+  cursor: pointer;
 }
-html[data-universe="far"] .case-study-view .case-section {
-  scroll-margin-top: calc(var(--topbar-height) + 28px);
+html[data-universe="far"] .case-study-view .case-contents-links > .case-contents-link:focus-visible {
+  outline: 2px solid var(--far-accent);
+  outline-offset: 3px;
 }
 @media (max-width: 760px) {
-  html[data-universe="far"] .case-study-view .case-contents {
-    margin-bottom: 52px;
-    padding: 20px 0 22px;
-  }
   html[data-universe="far"] .case-study-view .case-contents-links {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 10px 12px;
+    gap: 8px;
   }
   html[data-universe="far"] .case-study-view .case-contents-links > .case-contents-link {
-    min-height: 50px;
+    min-height: 46px;
     padding: 10px 12px;
-    font-size: 12px;
   }
 }
+@media (max-width: 420px) {
+  html[data-universe="far"] .case-study-view .case-contents-links {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+/* ==========================================================================
+   v373 | Shared branding, accessible hero copy and consistent insight rhythm
+   Preserve the Light/Dark Side palettes, but reuse Normal mode's VA lock-up.
+   Scoped to Far, far away so Normal mode stays visually identical.
+   ========================================================================== */
+
+/* Normal mode's established brand: square VA badge, name and UX Design line.
+   Do not reintroduce the old Jedi/Sith rectangular wordmark container. */
+html[data-universe="far"] .sidenav .logo {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  gap: 11px !important;
+  height: 64px !important;
+  min-height: 64px !important;
+  width: auto;
+  margin: 18px 18px 20px !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  font-family: Inter, "Work Sans", Arial, sans-serif !important;
+  color: var(--ink) !important;
+  letter-spacing: -.035em;
+}
+html[data-universe="far"] .sidenav .logo .brand-mark {
+  display: grid !important;
+  place-items: center;
+  flex: 0 0 38px;
+  width: 38px;
+  height: 38px;
+  background: var(--far-brand-badge);
+  color: #fff;
+  border-radius: 11px;
+  font: 750 14px/1 Inter, "Work Sans", Arial, sans-serif;
+  letter-spacing: -.04em;
+  box-shadow: none;
+}
+html[data-universe="far"] .sidenav .logo .logo-long {
+  display: flex !important;
+  align-items: center;
+  min-width: 0;
+}
+html[data-universe="far"] .sidenav .logo .logo-fullname {
+  display: flex !important;
+  flex-direction: column;
+  min-width: 0;
+  font: 740 14.5px/1.35 Inter, "Work Sans", Arial, sans-serif;
+  letter-spacing: -.035em;
+  white-space: nowrap;
+}
+html[data-universe="far"] .sidenav .logo .brand-subtitle {
+  display: block !important;
+  margin-top: 3px;
+  color: var(--far-brand-subtitle);
+  font: 450 12px/1.45 Inter, "Work Sans", Arial, sans-serif;
+  letter-spacing: 0;
+}
+html[data-universe="far"] .sidenav .logo :is(.logo-wordmark,.logo-short) { display: none !important; }
+html[data-universe="far"][data-side="light"] {
+  --far-brand-badge: #087ca8;
+  --far-brand-subtitle: #634a33;
+  --far-hero-description-ink: #3d2c22;
+}
+html[data-universe="far"][data-side="dark"] {
+  --far-brand-badge: #ca3548;
+  --far-brand-subtitle: #bfc0c9;
+  --far-hero-description-ink: #f5ebee;
+}
+html[data-universe="far"] .app.is-collapsed .sidenav .logo {
+  justify-content: center !important;
+  width: 40px !important;
+  min-height: 48px !important;
+  height: 48px !important;
+  margin: 18px auto 14px !important;
+  gap: 0 !important;
+}
+html[data-universe="far"] .app.is-collapsed .sidenav .logo .brand-mark { display: grid !important; }
+html[data-universe="far"] .app.is-collapsed .sidenav .logo .logo-long { display: none !important; }
+
+/* Hero description: readable over the coloured feather in each galaxy side. */
+html[data-universe="far"] .case-study-view .case-hero-editorial-lede {
+  color: var(--far-hero-description-ink) !important;
+  font-family: Inter, "Work Sans", Arial, sans-serif;
+  font-size: clamp(16px, 1.12vw, 18px);
+  font-weight: 540;
+  line-height: 1.65;
+  max-width: 760px;
+  opacity: 1 !important;
+}
+html[data-universe="far"] .case-study-view .case-hero-projectcompany {
+  color: var(--far-hero-description-ink) !important;
+  opacity: .88;
+}
+
+/* The image/video frame is a separate unit; its supporting insight is not
+   allowed to touch its bottom edge. Same spacing for every case study. */
+html[data-universe="far"] .case-study-view .case-block > :is(.case-image-frame,.case-motion-video-frame,.hcl-background-video-frame) + .case-callout {
+  margin-top: 24px !important;
+}
+html[data-universe="far"] .case-study-view .case-block > :is(.case-image-frame,.case-motion-video-frame,.hcl-background-video-frame) + .case-caption {
+  margin-top: 16px !important;
+}
+html[data-universe="far"] .case-study-view .case-block > .case-body + :is(.case-image-frame,.case-motion-video-frame,.hcl-background-video-frame) {
+  margin-top: 28px !important;
+}
+@media (max-width: 760px) {
+  html[data-universe="far"] .case-study-view .case-block > :is(.case-image-frame,.case-motion-video-frame,.hcl-background-video-frame) + .case-callout { margin-top: 20px !important; }
+  html[data-universe="far"] .case-study-view .case-block > .case-body + :is(.case-image-frame,.case-motion-video-frame,.hcl-background-video-frame) { margin-top: 24px !important; }
+}
+
 </style>
 </head>
 <body>
@@ -16625,8 +17340,10 @@ html[data-universe="far"] .case-study-view .case-section {
 <article class="case-stat-card"><p class="case-stat-value">10+</p><h4 class="case-stat-title">Seconds loading</h4><p class="case-stat-copy">The existing data-fetching services were too slow.</p></article>
 <article class="case-stat-card"><p class="case-stat-value">3</p><h4 class="case-stat-title">Supported tiers</h4><p class="case-stat-copy">The core transparency limitation remained.</p></article>
 </div></div>
+<div class="case-insight-grid">
 <div class="case-callout" data-insight-label="Hypothesis">If AI identifies duplicate links and users are prompted to check them, users can clean unhealthy data before it affects the network.</div>
 <div class="case-callout" data-insight-label="Hypothesis">If the interface is clear and fast, users are less likely to create the same relationships more than once.</div>
+</div>
 <div class="case-block case-stacked-media"><h3 class="case-block-title">What did the developers think?</h3><p class="case-body">As the back-end team rebuilt the repositories and services, I worked with them to identify front-end concepts that could surface hierarchical data quickly and expose discrepancies.</p><div class="case-image-frame"><img alt="Technical architecture for the new supply chain data services" class="case-image" loading="lazy" src="assets/case-study-media/b2b2751f3898-68f0fe45494c713440e2edb2_8636e3c0437bda796d5a1ecacc28346d_frame-2453.png"/></div></div>
 <div class="case-block case-stacked-media"><h3 class="case-block-title">What was the happy path?</h3><p class="case-body">Users should arrive on the page, see urgent actions, drill into tiers, find a supplier or site and continue to the detailed data they need.</p><div class="case-image-frame"><img alt="Happy-path journey through the supply chain network" class="case-image" loading="lazy" src="assets/case-study-media/5e1642b2521c-68f17194bc0e770cb4234dc1_b396643bd2ec929c1978f9cc43f73fab_group-416-.png"/></div></div>
 </div>
@@ -18867,7 +19584,11 @@ html[data-universe="far"] .case-study-view .case-section {
 
   universeObserver.observe(root, { attributes: true });
 
+  // A section link changes the hash without changing the page. Replaying the
+  // case-study entrance at that moment fights scrollIntoView() and shifts the
+  // destination while the visitor is navigating between chapters.
   window.addEventListener('hashchange', () => {
+    if (window.location.hash.includes('/')) return;
     requestAnimationFrame(replayFarPageMotion);
   });
 

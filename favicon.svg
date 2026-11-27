@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64" role="img" aria-label="VA - Vaggos Angelis">
+  <rect width="64" height="64" rx="17" fill="#245EEA"/>
+  <g fill="#FFFFFF" transform="translate(32 32) scale(0.01569653 -0.01569653) translate(-1529.0000 -745.0000)">
+    <path transform="translate(0 0)" d="M571 0H970L1480 1490H1143L913 771C868 621 822 449 772 246C721 447 673 621 626 771L388 1490H49Z"/><path transform="translate(1529 0)" d="M49 0H386L497 346H1026L1141 0H1480L958 1490H558ZM573 585 616 719C661 869 705 1046 755 1251C807 1048 854 872 902 719L947 585Z"/>
+  </g>
+</svg>
